@@ -36,6 +36,12 @@ public class WordSearch {
       return result;
     }
 
+    public int rowSize(){
+      return data.length;
+    }
+    public int columnSize(){
+      return data[0].length;
+    }
 
     /**Attempts to add a given word to the specified position of the WordGrid.
      *The word is added from left to right, must fit on the WordGrid, and must
@@ -67,7 +73,7 @@ public class WordSearch {
     */
 public boolean addWordHorizontal(String word, int row, int col){
   for (int i = 0; i < word.length(); i++){
-    if (!(data[row][col] == '_' || data[row][col] == word.charAt(i))){return false;}
+    if (!(data[row][col] == '_' || data[row][col] == word.charAt(i)) && word.length() > rowSize()){return false;}
   }
   for (int i = 0; i < word.length(); i++){
     insert(word.charAt(i), row, col + i);
@@ -88,7 +94,7 @@ public boolean addWordHorizontal(String word, int row, int col){
      */
   public boolean addWordVertical(String word,int row, int col){
         for (int i = 0; i < word.length(); i++){
-          if (!(data[row][col] == '_' || data[row][col] == word.charAt(i))){return false;}
+          if (!(data[row][col] == '_' || data[row][col] == word.charAt(i)) && word.length > columnSize()){return false;}
         }
         for (int i = 0; i < word.length(); i++){
           insert(word.charAt(i), row + i, col);
