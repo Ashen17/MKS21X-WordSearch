@@ -72,7 +72,7 @@ public class WordSearch {
     }
     */
 public boolean addWordHorizontal(String word, int row, int col){
-  if (word.length() > rowSize()){return false;}
+  if (word.length() > rowSize() - row){return false;}
   for (int i = 0; i < word.length(); i++){
     if (data[row][col + i] != '_' && data[row][col + i] != word.charAt(i)) {return false;}
   }
@@ -94,9 +94,8 @@ public boolean addWordHorizontal(String word, int row, int col){
 
      */
   public boolean addWordVertical(String word,int row, int col){
-    if (word.length() > columnSize()){return false;}
+    if (word.length() > columnSize() - col){return false;}
         for (int i = 0; i < word.length(); i++){
-          System.out.println("Trial" + i);
           if (data[row + i][col] != '_' && data[row + i][col] != word.charAt(i)){return false;}
         }
         for (int i = 0; i < word.length(); i++){
@@ -104,5 +103,15 @@ public boolean addWordHorizontal(String word, int row, int col){
         }
         return true;
       }
+    public boolean addWordDiagonal(String word,int row, int col){
+      if (word.length() > columnSize() - col || word.length() > rowSize() - row){return false;}
+          for (int i = 0; i < word.length(); i++){
+            if (data[row + i][col + i] != '_' && data[row + i][col + i] != word.charAt(i)){return false;}
+          }
+          for (int i = 0; i < word.length(); i++){
+            insert(word.charAt(i), row + i, col + i);
+          }
+          return true;
+        }
 
 }
