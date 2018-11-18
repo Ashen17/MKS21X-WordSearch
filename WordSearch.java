@@ -1,15 +1,53 @@
+import java.util.ArrayList;
+import java.util.Random;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 public class WordSearch {
   private char[][]data;
+  //the random seed used to produce this WordSearch
+    private int seed;
 
-    /**Initialize the grid to the size specified
+    //a random Object to unify your random calls
+    private Random randgen;
 
-     *and fill all of the positions with '_'
-     *@param row is the starting height of the WordSearch
-     *@param col is the starting width of the WordSearch
-     */
+    //all words from a text file get added to wordsToAdd, indicating that they have not yet been added
+    private ArrayList<String> wordsToAdd;
+
+    //all words that were successfully added get moved into wordsAdded.
+    private ArrayList<String> wordsAdded;
+
     public WordSearch(int rows,int cols){
       data = new char[rows][cols];
       clear();
+    }
+
+    public WordSearch( int rows, int cols, String fileName) {
+      data = new char[rows][cols];
+      clear();
+      randgen = new Random();
+      try{findWords(fileName);}
+      catch (FileNotFoundException e){System.out.println("File not found: " + fileName);}
+      //addAllWords();
+
+    //Choose a randSeed using the clock random
+}
+    public WordSearch( int rows, int cols, String fileName, int randSeed){
+      data = new char[rows][cols];
+      clear();
+      randgen = new Random(randSeed);
+      try{findWords(fileName);}
+      catch (FileNotFoundException e){System.out.println("File not found: " + fileName);}
+      //addAllWords();
+    //Use the random seed specified.
+}
+    private void findWords(String fileName) throws FileNotFoundException{
+      File f = new File(fileName);
+      Scanner read = new Scanner(f);
+      while (read.hasNext()){
+        String line = read.nextLine();
+        wordsToAdd.add(line);
+      }
     }
 
     /**Set all values in the WordSearch to underscores'_'*/
