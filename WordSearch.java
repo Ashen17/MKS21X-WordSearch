@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 public class WordSearch {
-  private char[][]data;
+    private char[][]data;
   //the random seed used to produce this WordSearch
     private int seed;
 
@@ -30,6 +30,7 @@ public class WordSearch {
       clear();
       //randgen = new Random();
       seed = (int)(Math.random() * 777777);
+      randgen = new Random(seed);
       wordsToAdd = new ArrayList<String>();
       wordsAdded = new ArrayList<String>();
       try{findWords(fileName);}
@@ -41,8 +42,8 @@ public class WordSearch {
     public WordSearch( int rows, int cols, String fileName, int randSeed){
       data = new char[rows][cols];
       clear();
-      //randgen = new Random(randSeed);
       seed = randSeed;
+      randgen = new Random(seed);
       wordsToAdd = new ArrayList<String>();
       wordsAdded = new ArrayList<String>();
       try{findWords(fileName);}
@@ -60,8 +61,11 @@ public class WordSearch {
         wordsToAdd.add(line);
       }
     }
+    /*
+    public ArrayList<String> getWordstoAdd(){//for testing purposes
+      return wordsToAdd;
+    }*/
 
-    /**Set all values in the WordSearch to underscores'_'*/
     private void clear(){
       for (int r = 0; r < data.length; r++){
         for (int c = 0; c < data[r].length; c++){
@@ -69,11 +73,17 @@ public class WordSearch {
         }
       }
     }
+    private boolean addWord(String word, int r, int c, int rowIncrement, int colIncrement){
+      if (word.length() > rowSize() - r){return false;}
+      for (int i = 0; i < word.length(); i++){
+        if (data[r][c + i] != '_' && data[r][c + i] != word.charAt(i)) {return false;}
+      }
+      for (int pos = 0; pos < word.length(); pos++, r += rowIncrement, c += colIncrement){
+        insert(word.charAt(pos), r, c);
+      }
+      return true;
+    }
 
-    /**Each row is a new line, there is a space between each letter
-     *@return a String with each character separated by spaces, and rows
-     *separated by newlines.
-     */
     public String toString(){
       String result = "";
       for (int r = 0; r < rowSize(); r++){
@@ -87,28 +97,29 @@ public class WordSearch {
       return result;
     }
 
-    public int rowSize(){
+
+    public int rowSize(){//to clarify data.length as rowsize
       return data.length;
     }
-    public int columnSize(){
+    public int columnSize(){//to clarify data.length[0] as columnsize
       return data[0].length;
     }
 
-    private boolean insert(char insert, int row, int col){
-        if (data[row][col] == insert || data[row][col] == '_'){
-          data[row][col] = insert;
+    private boolean insert(char insert, int r, int c){
+        if (data[r][c] == insert || data[r][c] == '_'){
+          data[r][c] = insert;
           return true;
         }
         return false;
     }
 
-public boolean addWordHorizontal(String word, int row, int col){
-  if (word.length() > rowSize() - row){return false;}
+public boolean addWordHorizontal(String word, int r, int c){
+  if (word.length() > rowSize() - r){return false;}
   for (int i = 0; i < word.length(); i++){
-    if (data[row][col + i] != '_' && data[row][col + i] != word.charAt(i)) {return false;}
+    if (data[r][c + i] != '_' && data[r][c + i] != word.charAt(i)) {return false;}
   }
   for (int i = 0; i < word.length(); i++){
-    insert(word.charAt(i), row, col + i);
+    insert(word.charAt(i), r, c + i);
   }
   return true;
 }
@@ -117,30 +128,30 @@ public boolean addWordHorizontal(String word, int row, int col){
      *have a corresponding letter to match any letters that it overlaps.
      *
      *@param word is any text to be added to the word grid.
-     *@param row is the vertical locaiton of where you want the word to start.
-     *@param col is the horizontal location of where you want the word to start.
+     *@param r is the vertical locaiton of where you want the word to start.
+     *@param c is the horizontal location of where you want the word to start.
      *@return true when the word is added successfully. When the word doesn't fit,
      *or there are overlapping letters that do not match, then false is returned.
      *and the board is NOT modified.
 
      */
-  public boolean addWordVertical(String word,int row, int col){
-    if (word.length() > columnSize() - col){return false;}
+  public boolean addWordVertical(String word,int r, int c){
+    if (word.length() > columnSize() - c){return false;}
         for (int i = 0; i < word.length(); i++){
-          if (data[row + i][col] != '_' && data[row + i][col] != word.charAt(i)){return false;}
+          if (data[r + i][c] != '_' && data[r + i][c] != word.charAt(i)){return false;}
         }
         for (int i = 0; i < word.length(); i++){
-          insert(word.charAt(i), row + i, col);
+          insert(word.charAt(i), r + i, c);
         }
         return true;
       }
-    public boolean addWordDiagonal(String word,int row, int col){
-      if (word.length() > columnSize() - col || word.length() > rowSize() - row){return false;}
+    public boolean addWordDiagonal(String word,int r, int c){
+      if (word.length() > columnSize() - c || word.length() > rowSize() - r){return false;}
           for (int i = 0; i < word.length(); i++){
-            if (data[row + i][col + i] != '_' && data[row + i][col + i] != word.charAt(i)){return false;}
+            if (data[r + i][c + i] != '_' && data[r + i][c + i] != word.charAt(i)){return false;}
           }
           for (int i = 0; i < word.length(); i++){
-            insert(word.charAt(i), row + i, col + i);
+            insert(word.charAt(i), r + i, c + i);
           }
           return true;
         }
