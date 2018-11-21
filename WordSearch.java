@@ -51,7 +51,7 @@ public class WordSearch {
       //addAllWords();
     //Use the random seed specified.
 }
-    private void findWords(String fileName) throws FileNotFoundException{
+    private void findWords(String fileName) throws FileNotFoundException{//helper function for constructor
       File f = new File(fileName);
       Scanner read = new Scanner(f);
       while (read.hasNext()){
@@ -74,7 +74,7 @@ public class WordSearch {
       }
     }
     public boolean addWord(String word, int r, int c, int rowIncrement, int colIncrement){
-      if (rowIncrement == 0 && colIncrement == 0){return false;}
+      if (rowIncrement == 0 && colIncrement == 0){return false;}//checks for improper increments
       try{
         for (int i = 0; i < word.length(); i++){
           if (data[r + i * rowIncrement][c + i * colIncrement] != '_' && data[r][c + i] != word.charAt(i)) {return false;}
@@ -85,6 +85,18 @@ public class WordSearch {
         insert(word.charAt(pos), r, c);
       }
       return true;
+    }
+
+    public void addAllWords(){
+      for (int tries = 0; tries < 100 && (wordsToAdd.size() == 0); tries++){
+        //addWord(wordsToAdd.get(randgen.nextInt()), randgen.nextInt() % rowSize(), randgen.nextInt() % columnSize(), randgen.nextInt() % 2, randgen.nextInt() % 2); too clunky
+        String word = wordsToAdd.get(randgen.nextInt());
+        int r = Math.abs(randgen.nextInt()) % rowSize();
+        int c = Math.abs(randgen.nextInt()) % columnSize();
+        int rowdirection = randgen.nextInt() % 2;
+        int columndirection = randgen.nextInt() % 2;
+        addWord(word, r, c, rowdirection, columndirection);
+      }
     }
 
 
