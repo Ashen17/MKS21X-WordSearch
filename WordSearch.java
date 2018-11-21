@@ -73,16 +73,20 @@ public class WordSearch {
         }
       }
     }
-    private boolean addWord(String word, int r, int c, int rowIncrement, int colIncrement){
-      if (word.length() > rowSize() - r){return false;}
-      for (int i = 0; i < word.length(); i++){
-        if (data[r][c + i] != '_' && data[r][c + i] != word.charAt(i)) {return false;}
+    public boolean addWord(String word, int r, int c, int rowIncrement, int colIncrement){
+      if (rowIncrement == 0 && colIncrement == 0){return false;}
+      try{
+        for (int i = 0; i < word.length(); i++){
+          if (data[r][c + i] != '_' && data[r][c + i] != word.charAt(i)) {return false;}
+        }
       }
+      catch (IndexOutOfBoundsException e){return false;}
       for (int pos = 0; pos < word.length(); pos++, r += rowIncrement, c += colIncrement){
         insert(word.charAt(pos), r, c);
       }
       return true;
     }
+
 
     public String toString(){
       String result = "";
