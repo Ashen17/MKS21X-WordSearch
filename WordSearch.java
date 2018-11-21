@@ -77,7 +77,7 @@ public class WordSearch {
       if (rowIncrement == 0 && colIncrement == 0){return false;}
       try{
         for (int i = 0; i < word.length(); i++){
-          if (data[r][c + i] != '_' && data[r][c + i] != word.charAt(i)) {return false;}
+          if (data[r + i * rowIncrement][c + i * colIncrement] != '_' && data[r][c + i] != word.charAt(i)) {return false;}
         }
       }
       catch (IndexOutOfBoundsException e){return false;}

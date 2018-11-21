@@ -18,5 +18,22 @@ public class Driver{
     System.out.println(animals);
     WordSearch colors = new WordSearch(4, 4, "Words.txt", 31425);
     System.out.println(colors);
+    //System.out.println(colors.getWordstoAdd());
+    WordSearch whatever = new WordSearch(10, 10, "Words.txt");
+    System.out.println(whatever);
+    System.out.println(whatever.addWord("boo", 3, 3, 1, 0));//boo goes straight down from [3, 3]
+    System.out.println(whatever);
+    System.out.println(whatever.addWord("orrery", 4, 3, 0, 1));//true
+    System.out.println(whatever);
+    System.out.println(whatever.addWord("Yosemite", 3, 8, 1 ,-1));//false
+    System.out.println(whatever);
+    System.out.println(whatever.addWord("Yose",3, 2, 1, 0 ));//true
+    System.out.println(whatever);
+    System.out.println(whatever.addWord("Yosemite", 3, 2, 1, 0));//false
+    System.out.println(whatever);
+    System.out.println(whatever.addWord("annoying", 2, 2, -1, -1));//false
+    System.out.println(whatever.addWord("cat",2, 5, 1, 0 ));//false
+    System.out.println(whatever.addWord("dog", 0, 0, 0, 0));//false
+    System.out.println(whatever);
   }
 }
