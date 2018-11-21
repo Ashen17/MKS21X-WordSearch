@@ -16,5 +16,7 @@ public class Driver{
     animals = new WordSearch(4, 4);
     System.out.println(animals.addWordDiagonal("fish", 0, 0));
     System.out.println(animals);
+    WordSearch colors = new WordSearch(4, 4, "Words.txt", 31425);
+    System.out.println(colors);
   }
 }

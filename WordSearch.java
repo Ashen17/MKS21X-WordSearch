@@ -20,12 +20,18 @@ public class WordSearch {
     public WordSearch(int rows,int cols){
       data = new char[rows][cols];
       clear();
+      seed = (int)(Math.random() * 777777);
+      wordsToAdd = new ArrayList<String>();
+      wordsAdded = new ArrayList<String>();
     }
 
     public WordSearch( int rows, int cols, String fileName) {
       data = new char[rows][cols];
       clear();
-      randgen = new Random();
+      //randgen = new Random();
+      seed = (int)(Math.random() * 777777);
+      wordsToAdd = new ArrayList<String>();
+      wordsAdded = new ArrayList<String>();
       try{findWords(fileName);}
       catch (FileNotFoundException e){System.out.println("File not found: " + fileName);}
       //addAllWords();
@@ -35,7 +41,10 @@ public class WordSearch {
     public WordSearch( int rows, int cols, String fileName, int randSeed){
       data = new char[rows][cols];
       clear();
-      randgen = new Random(randSeed);
+      //randgen = new Random(randSeed);
+      seed = randSeed;
+      wordsToAdd = new ArrayList<String>();
+      wordsAdded = new ArrayList<String>();
       try{findWords(fileName);}
       catch (FileNotFoundException e){System.out.println("File not found: " + fileName);}
       //addAllWords();
@@ -46,6 +55,8 @@ public class WordSearch {
       Scanner read = new Scanner(f);
       while (read.hasNext()){
         String line = read.nextLine();
+        //System.out.println(line);
+        //System.out.println(wordsToAdd);
         wordsToAdd.add(line);
       }
     }
@@ -65,12 +76,14 @@ public class WordSearch {
      */
     public String toString(){
       String result = "";
-      for (int r = 0; r < data.length; r++){
-        for (int c = 0; c < data[r].length; c++){
+      for (int r = 0; r < rowSize(); r++){
+        result += "|";
+        for (int c = 0; c < columnSize(); c++){
           result += data[r][c] + " ";
         }
-        result += "\n";
+        result += "|\n";
       }
+      result += "word: " + wordsAdded + "(" + "seed: " + seed + ")";
       return result;
     }
 
@@ -81,19 +94,6 @@ public class WordSearch {
       return data[0].length;
     }
 
-    /**Attempts to add a given word to the specified position of the WordGrid.
-     *The word is added from left to right, must fit on the WordGrid, and must
-     *have a corresponding letter to match any letters that it overlaps.
-     *
-     *@param word is any text to be added to the word grid.
-     *@param row is the vertical locaiton of where you want the word to start.
-     *@param col is the horizontal location of where you want the word to start.
-     *@return true when the word is added successfully. When the word doesn't fit,
-     * or there are overlapping letters that do not match, then false is returned
-
-     * and the board is NOT modified.
-
-     */
     private boolean insert(char insert, int row, int col){
         if (data[row][col] == insert || data[row][col] == '_'){
           data[row][col] = insert;
@@ -101,14 +101,7 @@ public class WordSearch {
         }
         return false;
     }
-    /*
-    public boolean addWordHorizontal(String word,int row, int col){
-        check = true;
-        for (int i = 0; i < word.length() && check; i++){
-          insert(word.charAt(i), row, col + i);
-        }
-    }
-    */
+
 public boolean addWordHorizontal(String word, int row, int col){
   if (word.length() > rowSize() - row){return false;}
   for (int i = 0; i < word.length(); i++){
