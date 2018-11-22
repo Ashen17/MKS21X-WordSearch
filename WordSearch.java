@@ -96,7 +96,9 @@ public class WordSearch {
         int rowdirection = randgen.nextInt() % 2;
         int columndirection = randgen.nextInt() % 2;
         if (addWord(word, r, c, rowdirection, columndirection)){
-          wordsAdded.add(wordsToAdd.remove(word));}
+          wordsAdded.add(word);
+          wordsToAdd.remove(word);
+        }
       }
     }
 
