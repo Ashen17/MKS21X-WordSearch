@@ -58,7 +58,7 @@ public class WordSearch {
         String line = read.nextLine();
         //System.out.println(line);
         //System.out.println(wordsToAdd);
-        wordsToAdd.add(line);
+        wordsToAdd.add(line.toUpperCase());
       }
     }
     /*
@@ -107,11 +107,13 @@ public class WordSearch {
 
     public String toString(){
       String result = "";
+
       for (int r = 0; r < rowSize(); r++){
         result += "|";
         for (int c = 0; c < columnSize(); c++){
+          if (data[r][c] == '_'){result += (char)(randgen.nextInt(26) + 65) + " ";}
+          else{result += data[r][c] + " ";}
 
-          result += data[r][c] + " ";
         }
         result += "|\n";
       }
