@@ -88,16 +88,18 @@ public class WordSearch {
     }
 
     public void addAllWords(){
-      for (int tries = 0; tries < 100 && (wordsToAdd.size() != 0); tries++){
+      while (wordsToAdd.size() > 0){
         //addWord(wordsToAdd.get(randgen.nextInt()), randgen.nextInt() % rowSize(), randgen.nextInt() % columnSize(), randgen.nextInt() % 2, randgen.nextInt() % 2); too clunky
         String word = wordsToAdd.get(randgen.nextInt(wordsToAdd.size()));
-        int r = (randgen.nextInt(rowSize()));
-        int c = (randgen.nextInt(columnSize()));
         int rowdirection = randgen.nextInt() % 2;
         int columndirection = randgen.nextInt() % 2;
-        if (addWord(word, r, c, rowdirection, columndirection)){
-          wordsAdded.add(word);
-          wordsToAdd.remove(word);
+        for (int tries = 1; tries <= 50 && !(wordsAdded.contains(word)); tries++){
+          int r = (randgen.nextInt(rowSize()));
+          int c = (randgen.nextInt(columnSize()));
+          if (addWord(word, r, c, rowdirection, columndirection)){
+            wordsAdded.add(word);
+            wordsToAdd.remove(word);
+          }
         }
       }
     }
@@ -108,6 +110,7 @@ public class WordSearch {
       for (int r = 0; r < rowSize(); r++){
         result += "|";
         for (int c = 0; c < columnSize(); c++){
+
           result += data[r][c] + " ";
         }
         result += "|\n";
@@ -124,12 +127,8 @@ public class WordSearch {
       return data[0].length;
     }
 
-    private boolean insert(char insert, int r, int c){
-        if (data[r][c] == insert || data[r][c] == '_'){
+    private void insert(char insert, int r, int c){//adds a single character with given location and character. Written for clarity
           data[r][c] = insert;
-          return true;
-        }
-        return false;
     }
 
 public boolean addWordHorizontal(String word, int r, int c){
@@ -142,18 +141,7 @@ public boolean addWordHorizontal(String word, int r, int c){
   }
   return true;
 }
-   /**Attempts to add a given word to the specified position of the WordGrid.
-     *The word is added from top to bottom, must fit on the WordGrid, and must
-     *have a corresponding letter to match any letters that it overlaps.
-     *
-     *@param word is any text to be added to the word grid.
-     *@param r is the vertical locaiton of where you want the word to start.
-     *@param c is the horizontal location of where you want the word to start.
-     *@return true when the word is added successfully. When the word doesn't fit,
-     *or there are overlapping letters that do not match, then false is returned.
-     *and the board is NOT modified.
 
-     */
   public boolean addWordVertical(String word,int r, int c){
     if (word.length() > columnSize() - c){return false;}
         for (int i = 0; i < word.length(); i++){
