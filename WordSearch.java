@@ -35,7 +35,7 @@ public class WordSearch {
       wordsAdded = new ArrayList<String>();
       try{findWords(fileName);}
       catch (FileNotFoundException e){System.out.println("File not found: " + fileName);}
-      //addAllWords();
+      addAllWords();
 
     //Choose a randSeed using the clock random
 }
@@ -48,7 +48,7 @@ public class WordSearch {
       wordsAdded = new ArrayList<String>();
       try{findWords(fileName);}
       catch (FileNotFoundException e){System.out.println("File not found: " + fileName);}
-      //addAllWords();
+      addAllWords();
     //Use the random seed specified.
 }
     private void findWords(String fileName) throws FileNotFoundException{//helper function for constructor
@@ -88,14 +88,15 @@ public class WordSearch {
     }
 
     public void addAllWords(){
-      for (int tries = 0; tries < 100 && (wordsToAdd.size() == 0); tries++){
+      for (int tries = 0; tries < 100 && (wordsToAdd.size() != 0); tries++){
         //addWord(wordsToAdd.get(randgen.nextInt()), randgen.nextInt() % rowSize(), randgen.nextInt() % columnSize(), randgen.nextInt() % 2, randgen.nextInt() % 2); too clunky
-        String word = wordsToAdd.get(randgen.nextInt());
-        int r = Math.abs(randgen.nextInt()) % rowSize();
-        int c = Math.abs(randgen.nextInt()) % columnSize();
+        String word = wordsToAdd.get(randgen.nextInt(wordsToAdd.size()));
+        int r = (randgen.nextInt(rowSize()));
+        int c = (randgen.nextInt(columnSize()));
         int rowdirection = randgen.nextInt() % 2;
         int columndirection = randgen.nextInt() % 2;
-        addWord(word, r, c, rowdirection, columndirection);
+        if (addWord(word, r, c, rowdirection, columndirection)){
+          wordsAdded.add(wordsToAdd.remove(word));}
       }
     }
 
