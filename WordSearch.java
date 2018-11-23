@@ -5,14 +5,22 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 public class WordSearch {
   public static void main(String[] args) {
+    String directions = "Format of the function: \n" +
+      "java WordSearch r c filename [seed] [answer] \n" +
+      "r, c are integers that represent the row and column size of the wordsearch respectively.Either value must be larger than the largest word(s) in filename \n" +
+      "filename is a String that is the name of the file that has the lists of words you wish you create a wordsearch out of \n" +
+      "seed is integer from 0 to 10000, inclusive. \n" +
+      "answer is any value that prints the wordsearch with only the answers";
     try{
+    //if (arsg.length <= 3 || )
     if (args.length == 3){System.out.println(new WordSearch(Integer.parseInt(args[0]), Integer.parseInt(args[1]), args[2]));}
     else if(args.length == 4){System.out.println(new WordSearch(Integer.parseInt(args[0]), Integer.parseInt(args[1]), args[2], Integer.parseInt(args[3])));}
-    else if(args.length == 5){System.out.println((new WordSearch(Integer.parseInt(args[0]), Integer.parseInt(args[1]), args[2], Integer.parseInt(args[3]))).Answers());}
-    //else {System.out.println("")}
+    else if(args.length >= 5){System.out.println((new WordSearch(Integer.parseInt(args[0]), Integer.parseInt(args[1]), args[2], Integer.parseInt(args[3]))).Answers());}
+    else{}
     }
     catch (FileNotFoundException e){System.out.println("File not found: " + args[2]);}
     catch (IndexOutOfBoundsException e){System.out.println(e);}
+    catch (NumberFormatException e){System.out.println(e);}
   }
     private char[][]data;
     private int seed;
