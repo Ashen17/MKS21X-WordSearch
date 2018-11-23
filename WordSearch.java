@@ -12,13 +12,16 @@ public class WordSearch {
       "seed is integer from 0 to 10000, inclusive. \n" +
       "answer is any value that prints the wordsearch with only the answers";
     try{
-    //if (arsg.length <= 3 || )
-    if (args.length == 3){System.out.println(new WordSearch(Integer.parseInt(args[0]), Integer.parseInt(args[1]), args[2]));}
+    if (args.length < 3 || Integer.parseInt(args[3]) > 10000 || Integer.parseInt(args[3]) < 0 || Integer.parseInt(args[0]) < 0 || Integer.parseInt(args[1]) < 0) {System.out.println(directions);}
+    else if (args.length == 3){System.out.println(new WordSearch(Integer.parseInt(args[0]), Integer.parseInt(args[1]), args[2]));}
     else if(args.length == 4){System.out.println(new WordSearch(Integer.parseInt(args[0]), Integer.parseInt(args[1]), args[2], Integer.parseInt(args[3])));}
     else if(args.length >= 5){System.out.println((new WordSearch(Integer.parseInt(args[0]), Integer.parseInt(args[1]), args[2], Integer.parseInt(args[3]))).Answers());}
     else{}
     }
-    catch (FileNotFoundException e){System.out.println("File not found: " + args[2]);}
+    catch (FileNotFoundException e){
+      System.out.println("File not found: " + args[2]);
+      System.out.println(directions);
+    }
     catch (IndexOutOfBoundsException e){System.out.println(e);}
     catch (NumberFormatException e){System.out.println(e);}
   }
