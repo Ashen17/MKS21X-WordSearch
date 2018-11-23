@@ -10,27 +10,30 @@ public class WordSearch {
       "r, c are integers that represent the row and column size of the wordsearch respectively.Either value must be larger than the largest word(s) in filename \n" +
       "filename is a String that is the name of the file that has the lists of words you wish you create a wordsearch out of \n" +
       "seed is integer from 0 to 10000, inclusive. \n" +
-      "answer is any value that prints the wordsearch with only the answers";
+      "answer is a string that must be named keys";
     try{
-    if (args.length < 3 || Integer.parseInt(args[3]) > 10000 || Integer.parseInt(args[3]) < 0 || Integer.parseInt(args[0]) < 0 || Integer.parseInt(args[1]) < 0) {System.out.println(directions);}
-    else if (args.length == 3){System.out.println(new WordSearch(Integer.parseInt(args[0]), Integer.parseInt(args[1]), args[2]));}
-    else if(args.length == 4){System.out.println(new WordSearch(Integer.parseInt(args[0]), Integer.parseInt(args[1]), args[2], Integer.parseInt(args[3])));}
-    else if(args.length >= 5){System.out.println((new WordSearch(Integer.parseInt(args[0]), Integer.parseInt(args[1]), args[2], Integer.parseInt(args[3]))).Answers());}
-    else{}
-    }
-    catch (FileNotFoundException e){
-      System.out.println("File not found: " + args[2]);
+    if (args.length < 3 || (args.length == 4 && Integer.parseInt(args[3]) > 10000) || (args.length == 4 && Integer.parseInt(args[3]) < 0) || Integer.parseInt(args[0]) < 0 || Integer.parseInt(args[1]) < 0) {
       System.out.println(directions);
     }
-    catch (IndexOutOfBoundsException e){System.out.println(e);}
-    catch (NumberFormatException e){System.out.println(e);}
+    else if (args.length == 3){System.out.println(new WordSearch(Integer.parseInt(args[0]), Integer.parseInt(args[1]), args[2]));}
+    else if(args.length >= 5 && args[4].equals("keys")){System.out.println((new WordSearch(Integer.parseInt(args[0]), Integer.parseInt(args[1]), args[2], Integer.parseInt(args[3]))).Answers());}
+    else if(args.length == 4){System.out.println(new WordSearch(Integer.parseInt(args[0]), Integer.parseInt(args[1]), args[2], Integer.parseInt(args[3])));}
+    }
+    catch (FileNotFoundException e){
+      System.out.println(directions);
+    }
+    catch (IndexOutOfBoundsException e){System.out.println(e);}//from addallwordS(), if r and c are both smaller than the largest word in the file
+    catch (NumberFormatException e){
+      System.out.println(directions);
+    }
   }
     private char[][]data;
     private int seed;
-    private Random randgen;
+    private Random randgen;//the only random thing generated via clock random
     private ArrayList<String> wordsToAdd;
     private ArrayList<String> wordsAdded;
 
+    /* obselete constructor
     public WordSearch(int rows,int cols){
       data = new char[rows][cols];
       clear();
@@ -38,6 +41,7 @@ public class WordSearch {
       wordsToAdd = new ArrayList<String>();
       wordsAdded = new ArrayList<String>();
     }
+    */
 
     public WordSearch(int rows, int cols, String fileName) throws FileNotFoundException, IndexOutOfBoundsException{
       data = new char[rows][cols];
@@ -48,8 +52,7 @@ public class WordSearch {
       wordsAdded = new ArrayList<String>();
       findWords(fileName);
       addAllWords();
-
-}
+    }
     public WordSearch( int rows, int cols, String fileName, int randSeed){
       data = new char[rows][cols];
       clear();
@@ -60,8 +63,7 @@ public class WordSearch {
       try{findWords(fileName);}
       catch (FileNotFoundException e){System.out.println("File not found: " + fileName);}
       addAllWords();
-    //Use the random seed specified.
-}
+    }
     private void findWords(String fileName) throws FileNotFoundException{//helper function for constructor
       File f = new File(fileName);
       Scanner read = new Scanner(f);
@@ -115,7 +117,7 @@ public class WordSearch {
         }
       }
     }
-    private String Answers(){
+    private String Answers(){ //for printing out only the anwers, basically a toString that must be called manually
       String result = "";
       for (int r = 0; r < rowSize(); r++){
         result += "|";
@@ -134,9 +136,8 @@ public class WordSearch {
       for (int r = 0; r < rowSize(); r++){
         result += "|";
         for (int c = 0; c < columnSize(); c++){
-          if (data[r][c] == '_'){result += (char)(randgen.nextInt(26) + 65) + " ";}
+          if (data[r][c] == '_'){result += (char)(randgen.nextInt(26) + 65) + " ";}//uses ASCII values typecasted to randomly select characters to fill in fill in "_"'s
           else{result += data[r][c] + " ";}
-
         }
         result += "|\n";
       }
@@ -156,28 +157,28 @@ public class WordSearch {
           data[r][c] = insert;
     }
 
-public boolean addWordHorizontal(String word, int r, int c){
-  if (word.length() > rowSize() - r){return false;}
-  for (int i = 0; i < word.length(); i++){
-    if (data[r][c + i] != '_' && data[r][c + i] != word.charAt(i)) {return false;}
-  }
-  for (int i = 0; i < word.length(); i++){
-    insert(word.charAt(i), r, c + i);
-  }
-  return true;
-}
-
-  public boolean addWordVertical(String word,int r, int c){
-    if (word.length() > columnSize() - c){return false;}
-        for (int i = 0; i < word.length(); i++){
-          if (data[r + i][c] != '_' && data[r + i][c] != word.charAt(i)){return false;}
-        }
-        for (int i = 0; i < word.length(); i++){
-          insert(word.charAt(i), r + i, c);
-        }
-        return true;
+    public boolean addWordHorizontal(String word, int r, int c){//obselete
+      if (word.length() > rowSize() - r){return false;}
+      for (int i = 0; i < word.length(); i++){
+        if (data[r][c + i] != '_' && data[r][c + i] != word.charAt(i)) {return false;}
       }
-    public boolean addWordDiagonal(String word,int r, int c){
+      for (int i = 0; i < word.length(); i++){
+        insert(word.charAt(i), r, c + i);
+      }
+      return true;
+    }
+
+    public boolean addWordVertical(String word,int r, int c){//obselete
+      if (word.length() > columnSize() - c){return false;}
+          for (int i = 0; i < word.length(); i++){
+            if (data[r + i][c] != '_' && data[r + i][c] != word.charAt(i)){return false;}
+          }
+          for (int i = 0; i < word.length(); i++){
+            insert(word.charAt(i), r + i, c);
+          }
+          return true;
+    }
+    public boolean addWordDiagonal(String word,int r, int c){//obselete
       if (word.length() > columnSize() - c || word.length() > rowSize() - r){return false;}
           for (int i = 0; i < word.length(); i++){
             if (data[r + i][c + i] != '_' && data[r + i][c + i] != word.charAt(i)){return false;}
@@ -186,6 +187,6 @@ public boolean addWordHorizontal(String word, int r, int c){
             insert(word.charAt(i), r + i, c + i);
           }
           return true;
-        }
+    }
 
 }
