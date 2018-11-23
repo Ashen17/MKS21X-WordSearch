@@ -4,17 +4,19 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 public class WordSearch {
+  public static void main(String[] args) {
+    try{
+    if (args.length == 3){System.out.println(new WordSearch(Integer.parseInt(args[0]), Integer.parseInt(args[1]), args[2]));}
+    else if(args.length == 4){System.out.println(new WordSearch(Integer.parseInt(args[0]), Integer.parseInt(args[1]), args[2], Integer.parseInt(args[3])));}
+    else if(args.length == 5){System.out.println((new WordSearch(Integer.parseInt(args[0]), Integer.parseInt(args[1]), args[2], Integer.parseInt(args[3]))).Answers());}
+    //else {System.out.println("")}
+    }
+    catch (FileNotFoundException e){System.out.println("File not found: " + args[2]);}
+  }
     private char[][]data;
-  //the random seed used to produce this WordSearch
     private int seed;
-
-    //a random Object to unify your random calls
     private Random randgen;
-
-    //all words from a text file get added to wordsToAdd, indicating that they have not yet been added
     private ArrayList<String> wordsToAdd;
-
-    //all words that were successfully added get moved into wordsAdded.
     private ArrayList<String> wordsAdded;
 
     public WordSearch(int rows,int cols){
@@ -25,19 +27,16 @@ public class WordSearch {
       wordsAdded = new ArrayList<String>();
     }
 
-    public WordSearch( int rows, int cols, String fileName) {
+    public WordSearch(int rows, int cols, String fileName) throws FileNotFoundException{
       data = new char[rows][cols];
       clear();
-      //randgen = new Random();
       seed = (int)(Math.random() * 777777);
       randgen = new Random(seed);
       wordsToAdd = new ArrayList<String>();
       wordsAdded = new ArrayList<String>();
-      try{findWords(fileName);}
-      catch (FileNotFoundException e){System.out.println("File not found: " + fileName);}
+      findWords(fileName);
       addAllWords();
 
-    //Choose a randSeed using the clock random
 }
     public WordSearch( int rows, int cols, String fileName, int randSeed){
       data = new char[rows][cols];
@@ -103,11 +102,21 @@ public class WordSearch {
         }
       }
     }
-
+    private String Answers(){
+      String result = "";
+      for (int r = 0; r < rowSize(); r++){
+        result += "|";
+        for (int c = 0; c < columnSize(); c++){
+          {result += data[r][c] + " ";}
+        }
+        result += "|\n";
+      }
+      result += "word: " + wordsAdded + "(" + "seed: " + seed + ")";
+      return result;
+    }
 
     public String toString(){
       String result = "";
-
       for (int r = 0; r < rowSize(); r++){
         result += "|";
         for (int c = 0; c < columnSize(); c++){
