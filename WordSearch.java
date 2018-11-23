@@ -12,6 +12,7 @@ public class WordSearch {
     //else {System.out.println("")}
     }
     catch (FileNotFoundException e){System.out.println("File not found: " + args[2]);}
+    catch (IndexOutOfBoundsException e){System.out.println(e);}
   }
     private char[][]data;
     private int seed;
@@ -27,7 +28,7 @@ public class WordSearch {
       wordsAdded = new ArrayList<String>();
     }
 
-    public WordSearch(int rows, int cols, String fileName) throws FileNotFoundException{
+    public WordSearch(int rows, int cols, String fileName) throws FileNotFoundException, IndexOutOfBoundsException{
       data = new char[rows][cols];
       clear();
       seed = (int)(Math.random() * 777777);
@@ -90,6 +91,7 @@ public class WordSearch {
       while (wordsToAdd.size() > 0){
         //addWord(wordsToAdd.get(randgen.nextInt()), randgen.nextInt() % rowSize(), randgen.nextInt() % columnSize(), randgen.nextInt() % 2, randgen.nextInt() % 2); too clunky
         String word = wordsToAdd.get(randgen.nextInt(wordsToAdd.size()));
+        if (word.length() > rowSize() && word.length() > columnSize()){throw new IndexOutOfBoundsException("The word " + word + " is too small for the specified row and column sizes");}
         int rowdirection = randgen.nextInt() % 2;
         int columndirection = randgen.nextInt() % 2;
         for (int tries = 1; tries <= 50 && !(wordsAdded.contains(word)); tries++){
@@ -107,7 +109,8 @@ public class WordSearch {
       for (int r = 0; r < rowSize(); r++){
         result += "|";
         for (int c = 0; c < columnSize(); c++){
-          {result += data[r][c] + " ";}
+          if (data[r][c] == '_'){result += "  ";}
+          else{result += data[r][c] + " ";}
         }
         result += "|\n";
       }
